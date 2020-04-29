@@ -37,10 +37,23 @@ def new_entry(request, topic_id):
     else:
         form = EntryForm(data=request.POST)
         if form.is_valid():
-            new_entry = form.save(comit=False)
+            new_entry = form.save(commit=False)
             new_entry.topic = topic
             new_entry.save()
             form.save()
             return redirect('learning_logs:topic', topic_id=topic_id)
     context = {'form':form, 'topic':topic}
     return render(request, 'learning_logs/new_entry.html', context)
+
+def edit_entry(request, entry_id):
+    entry = Entry.objects.get(id=entry_id)
+    topic = entry.topic
+    if request.method != 'POST':
+        form = EntryForm(instance=entry)
+    else:
+        form = EntryForm(instance=entry, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('learning_logs:topic', topic_id=topic_id)
+    context = {'entry':entry, 'topic':topic, 'form':form}
+    return render(request, 'learning_logs/edit_entry.html', context)
