@@ -48,6 +48,9 @@ def new_entry(request, topic_id):
     else:
         form = EntryForm(data=request.POST)
         if form.is_valid():
+            # checking that the current user owns the entry’s topic before saving the new entry 
+            if topic.owner != request.user:
+                raise Http404
             new_entry = form.save(commit=False)
             new_entry.topic = topic
             new_entry.save()
