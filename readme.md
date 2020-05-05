@@ -5,3 +5,4 @@
  - Complete Django Part III
  - Complete Django Part IV
  - Complete Django Part V
+ - Complete Django Part VI
